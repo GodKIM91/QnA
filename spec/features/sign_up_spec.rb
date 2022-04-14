@@ -5,10 +5,9 @@ feature 'User can sing up', %q{
   And to ask questions
   And to answer questions
 } do
-  given(:user) { create(:user) }
+
   background { visit new_user_registration_path }
   
-
   scenario 'User with valid data can register' do
     fill_in 'Email', with: 'test_user@test.com'
     fill_in 'Password', with: '123456789'
@@ -37,6 +36,8 @@ feature 'User can sing up', %q{
     click_on 'Sign up'
     expect(page).to have_content "Password confirmation doesn't match Password"
   end
+
+  given(:user) { create(:user) }
 
   scenario 'User cant register twice with the same email' do
     fill_in 'Email', with: user.email
