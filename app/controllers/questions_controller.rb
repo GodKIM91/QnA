@@ -7,16 +7,18 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = @question.answers.new
+  end
 
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def edit; end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
@@ -26,15 +28,15 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to @question
+      redirect_to @question, notice: 'Your question successfully updated.'
     else
       render :edit
     end
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    @question.destroy if current_user.author_of?(@question)
+    redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
   private 
