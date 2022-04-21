@@ -22,7 +22,9 @@ feature 'User can create answer for question', %q{
       expect(page).to have_content question.title
       expect(page).to have_content question.body
       expect(page).to have_content 'Your answer successfully created.'
-      expect(page).to have_content 'Already creared answer body'
+      within '.answers' do
+        expect(page).to have_content 'Already creared answer body'
+      end
     end
 
     scenario 'create the answer with empty data' do
