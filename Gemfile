@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 2.7'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
+gem 'devise'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -52,6 +53,7 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
+  gem 'launchy'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
