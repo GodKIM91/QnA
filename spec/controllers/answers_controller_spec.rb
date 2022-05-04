@@ -29,6 +29,46 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    context 'Author tries edit answer with valid attributes' do
+      before { login(user) }
+      it 'changed answer body' do
+        patch :update, params: { id: answer, answer: { body: 'changed body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'changed body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, answer: { body: 'changed body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Author tries edit answer with invalid attributes' do
+      before { login(user) }
+      it 'not change answer body' do
+        expect { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js } }.to_not change(answer, :body)
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Not author tries to edit answer' do
+      let(:other_user) { create(:user) }
+      before{ login(other_user) }
+      it 'not change answer body' do
+        patch :update, params: { id: answer, answer: { body: 'changed body' } }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'changed body'
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:answer) { create(:answer, question: question, user: user) }
     let!(:other_user) { create(:user) }
@@ -50,6 +90,31 @@ RSpec.describe AnswersController, type: :controller do
     context 'Not author tries' do
       it 'to delete the answer' do
         expect { delete :destroy, params: { id: other_answer }, format: :js }.not_to change(Answer, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #set_best' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+    let(:other_user) { create(:user) }
+
+    context "Author of question can choose best answer" do
+      before { login(user) }
+
+      it 'makes answer as best' do
+        patch :set_best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer).to be_best
+      end
+    end
+
+    context "Not author tries choose best answer" do
+      before { login(other_user) }
+
+      it "doesn't make answer as best" do
+        patch :set_best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer).to_not be_best
       end
     end
   end

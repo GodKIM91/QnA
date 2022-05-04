@@ -6,10 +6,10 @@ p= @question.body
           question_path(@question),
           method: :delete
 
-hr style="background-color:blue"
+hr style="height:2px; background-color:red"
 
 .answers
-  = render @question.answers
+  = render @question.answers.sort_by_best
 
 - if current_user.present?
   = render 'answers/form'
