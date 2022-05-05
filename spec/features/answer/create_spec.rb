@@ -26,7 +26,7 @@ feature 'User can create answer for question', %q{
       end
     end
 
-    scenario 'try to create answer with empty data' do
+    scenario 'try to create answer with invalid empty body' do
       click_on 'Create'
       expect(page).to have_content "Body can't be blank"
     end

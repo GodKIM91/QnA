@@ -11,6 +11,7 @@ import "channels"
 // add jquery
 require('jquery')
 require("packs/answers")
+require("packs/questions")
 import $ from 'jquery'
 window.jQuery = $
 window.$ = $
