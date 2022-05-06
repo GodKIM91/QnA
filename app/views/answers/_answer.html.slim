@@ -1,0 +1,21 @@
+div id="answer_#{answer.id}"
+  - if answer.best?
+    p= 'Best answer!'
+    = image_tag "best_answer.png", size: 50
+  p= answer.body
+
+  - if current_user&.author_of?(answer)
+    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    p= link_to link_to 'Delete answer', answer_path(answer), remote: true, method: :delete
+  - if current_user&.author_of?(answer.question) && !answer.best?
+    p= link_to 'Set as best',
+    set_best_answer_path(answer),
+    method: :patch,
+    remote: true
+
+  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+    = f.label :body, 'Your answer'
+    = f.text_area :body
+    = f.submit 'Save'
+hr style="height:2px; background-color:blue; width:20%; margin-left:0"
+
