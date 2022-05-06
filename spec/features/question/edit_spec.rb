@@ -15,10 +15,20 @@ feature 'User can edit his question', %q{
     expect(page).to_not have_link 'Edit'
   end
 
+  scenario "User tries to edit other user's question" do
+    sign_in other_user
+    visit question_path(question)
+    expect(page).to_not have_content "Edit"
+  end
+
   describe 'Authenticated user', js: true do
-    scenario 'edits his question' do
+
+    background do
       sign_in user
       visit question_path(question)
+    end
+
+    scenario 'edits his question' do
       click_on 'Edit'
 
       within '.question' do
@@ -35,8 +45,6 @@ feature 'User can edit his question', %q{
     end
 
     scenario 'edits his question with errors' do
-      sign_in user
-      visit question_path(question)
       expect(page).to_not have_content "Body can't be blank"
       click_on 'Edit'
       within '.question' do
@@ -48,10 +56,25 @@ feature 'User can edit his question', %q{
       expect(page).to have_content "Title can't be blank"
     end
 
-    scenario "tries to edit other user's question" do
-      sign_in other_user
-      visit question_path(question)
-      expect(page).to_not have_content "Edit"
+    scenario 'edits his question attachment' do
+      click_on 'Edit'
+      within '.question' do
+        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+        click_on 'Save'
+        expect(page).to have_link 'rails_helper.rb'
+      end
+
+      click_on 'Edit'
+      within '.question' do
+        attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+        click_on 'Save'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
     end
+
+    
   end
 end
+
+#rspec spec/features/question/edit_spec.rb

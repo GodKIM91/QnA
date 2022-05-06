@@ -30,6 +30,15 @@ feature 'User can create answer for question', %q{
       click_on 'Create'
       expect(page).to have_content "Body can't be blank"
     end
+
+    scenario 'asks an answer with attached files' do
+      fill_in 'Your answer', with: 'Already creared answer body'
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Create'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
   end
 
   scenario 'Non authenticated user can not create answer' do
@@ -37,3 +46,5 @@ feature 'User can create answer for question', %q{
     expect(page).to_not have_content 'Create'
   end
 end
+
+#rspec spec/features/answer/create_spec.rb

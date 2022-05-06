@@ -3,6 +3,11 @@
 = form_with model: @question do |f|
   = f.label :title
   = f.text_field :title
+  br
   = f.label :body
   = f.text_area :body
+  br
+  = f.label :files
+  = f.file_field :files, multiple: true
+  br
   = f.submit 'Ask'
