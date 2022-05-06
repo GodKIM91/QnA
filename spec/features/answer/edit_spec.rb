@@ -26,6 +26,7 @@ feature 'User can edit his answer', %q{
 
     background do
       sign_in user
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
       visit question_path(question)
     end
 
@@ -42,18 +43,21 @@ feature 'User can edit his answer', %q{
     end
 
     scenario 'edits his answer attachment' do
-      click_on 'Edit'
-      within '.answers' do
-        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
-        click_on 'Save'
-        expect(page).to have_link 'rails_helper.rb'
-      end
-
+      expect(page).to have_link 'rails_helper.rb'
       click_on 'Edit'
       within '.answers' do
         attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
         click_on 'Save'
+        expect(page).to_not have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'delete his answer attachments' do
+      expect(page).to have_link 'rails_helper.rb'
+      click_on 'Edit'
+      within '.answers' do
+        click_on 'Delete file'
         expect(page).to_not have_link 'rails_helper.rb'
       end
     end
