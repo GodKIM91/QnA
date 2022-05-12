@@ -1,6 +1,13 @@
 h4= "Question title: #{question.title}"
 h5= "Question body: #{question.body}"
 
+- if question.files.attached?
+  - question.files.each do |file|
+    div id = "attached_file_id_#{file.id}"
+      p= link_to file.filename.to_s, url_for(file)
+      -if current_user&.author_of?(question)
+        p = link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+
 - if current_user&.author_of?(question)
     p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
     p= link_to 'Delete question', question_path(question), method: :delete
@@ -10,5 +17,8 @@ h5= "Question body: #{question.body}"
       br
       = f.label :body, 'Your question body'
       = f.text_area :body
+      br
+      = f.label :files
+      = f.file_field :files, multiple: true
       br
       = f.submit 'Save'

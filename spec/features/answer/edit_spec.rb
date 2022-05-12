@@ -16,12 +16,22 @@ feature 'User can edit his answer', %q{
     expect(page).to_not have_link 'Edit'
   end
 
-  describe 'Authenticated user', js: true do
-    scenario 'edits his answer' do
-      sign_in user
-      visit question_path(question)
-      click_on 'Edit'
+  scenario "User tries to edit other user's answer" do
+    sign_in other_user
+    visit question_path(question)
+    expect(page).to_not have_content "Edit"
+  end
 
+  describe 'Authenticated user', js: true do
+
+    background do
+      sign_in user
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
+      visit question_path(question)
+    end
+
+    scenario 'edits his answer' do
+      click_on 'Edit'
       within '.answers' do
         fill_in 'Your answer', with: 'edited answer'
         click_on 'Save'
@@ -32,12 +42,29 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'edits his answer attachment' do
+      expect(page).to have_link 'rails_helper.rb'
+      click_on 'Edit'
+      within '.answers' do
+        attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+        click_on 'Save'
+        expect(page).to_not have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'delete his answer attachments' do
+      expect(page).to have_link 'rails_helper.rb'
+      click_on 'Edit'
+      within '.answers' do
+        click_on 'Delete file'
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
+    end
+
     scenario 'edits his answer with errors' do
-      sign_in user
-      visit question_path(question)
       expect(page).to_not have_content "Body can't be blank"
       click_on 'Edit'
-
       within '.answers' do
         fill_in 'Your answer', with: ''
         click_on 'Save'
@@ -45,10 +72,8 @@ feature 'User can edit his answer', %q{
       expect(page).to have_content "Body can't be blank"
     end
     
-    scenario "tries to edit other user's answer" do
-      sign_in other_user
-      visit question_path(question)
-      expect(page).to_not have_content "Edit"
-    end
+    
   end
 end
+
+#rspec spec/features/answer/edit_spec.rb
