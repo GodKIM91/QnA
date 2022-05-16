@@ -1,10 +1,21 @@
 .answer-errors
   =render 'shared/errors', resource: @answer
+
 = form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
+
   = f.label :body, 'Your answer'
   = f.text_area :body
   br
   = f.label :files
   = f.file_field :files, multiple: true
-  br
+
+  p Links:
+  = f.fields_for :links do |l|
+    = l.label :name, 'Link name'
+    = l.text_field :name
+    br
+    = l.label :url
+    = l.text_field :url
+    br
+
   = f.submit 'Create'

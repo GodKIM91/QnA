@@ -1,6 +1,12 @@
 h4= "Question title: #{question.title}"
 h5= "Question body: #{question.body}"
 
+.links 
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
+
 - if question.files.attached?
   - question.files.each do |file|
     div id = "attached_file_id_#{file.id}"
