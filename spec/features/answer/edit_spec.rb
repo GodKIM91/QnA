@@ -55,15 +55,16 @@ feature 'User can edit his answer', %q{
     end
 
     scenario 'added one more link to his answer' do
-      expect(page).to_not have_link 'My gist', href: gist_url
-      click_on 'Edit'
       within '.answers' do
+        expect(page).to_not have_link 'My gist', href: gist_url
+        click_on 'Edit'
         click_on 'Add link'
         fill_in 'Link name', with: 'My gist'
         fill_in 'Url', with: gist_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: gist_url
       end
-      click_on 'Save'
-      expect(page).to have_link 'My gist', href: gist_url
+      
     end
 
     scenario 'delete his answer attachments' do
@@ -72,6 +73,19 @@ feature 'User can edit his answer', %q{
       within '.answers' do
         click_on 'Delete file'
         expect(page).to_not have_link 'rails_helper.rb'
+      end
+    end
+
+    scenario 'delete his answer link' do
+      within '.answers' do
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: gist_url
+        click_on 'Delete link'
+        expect(page).to_not have_link 'My gist', href: gist_url
       end
     end
 
@@ -87,4 +101,4 @@ feature 'User can edit his answer', %q{
   end
 end
 
-#rspec spec/features/answer/edit_spec.rb
+# rspec spec/features/answer/edit_spec.rb

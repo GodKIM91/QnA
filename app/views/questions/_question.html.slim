@@ -1,11 +1,12 @@
 h4= "Question title: #{question.title}"
 h5= "Question body: #{question.body}"
 
-.links 
-  p Links:
-  ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url
+- if question.links.present?
+  - question.links.each do |link|
+    div id = "link_id_#{link.id}"
+      p= link_to link.name, link.url
+      -if current_user&.author_of?(question)
+        p = link_to 'Delete link', link_path(link), method: :delete, remote: true
 
 - if question.files.attached?
   - question.files.each do |file|

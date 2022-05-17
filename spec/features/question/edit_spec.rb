@@ -59,15 +59,15 @@ feature 'User can edit his question', %q{
     end
 
     scenario 'added one more link to his question' do
-      expect(page).to_not have_link 'My gist', href: gist_url
       within '.question' do
+        expect(page).to_not have_link 'My gist', href: gist_url
         click_on 'Edit'
         click_on 'Add link'
         fill_in 'Link name', with: 'My gist'
         fill_in 'Url', with: gist_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: gist_url
       end
-      click_on 'Save'
-      expect(page).to have_link 'My gist', href: gist_url
     end
 
     scenario 'edits his question attachment' do
@@ -89,7 +89,20 @@ feature 'User can edit his question', %q{
         expect(page).to_not have_link 'rails_helper.rb'
       end
     end
+
+    scenario 'delete his question link' do
+      within '.question' do
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: gist_url
+        click_on 'Delete link'
+        expect(page).to_not have_link 'My gist', href: gist_url
+      end
+    end
   end
 end
 
-#rspec spec/features/question/edit_spec.rb
+# rspec spec/features/question/edit_spec.rb
