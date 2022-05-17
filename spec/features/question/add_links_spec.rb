@@ -9,21 +9,42 @@ feature 'User can add links to question', %q{
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
 
-  scenario 'User adds link when asks question' do
-    sign_in(user)
-    visit new_question_path
+  describe 'Authenticated user', js: true do
 
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text text'
-
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
-
-    click_on 'Ask'
-
-    expect(page).to have_link 'My gist', href: gist_url
+    background do
+      sign_in(user)
+      visit new_question_path
+    end
+  
+    scenario 'adds link when asks question', js: true do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+  
+      click_on 'Add link'
+  
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+  
+      click_on 'Ask'
+  
+      expect(page).to have_link 'My gist', href: gist_url
+    end
+  
+    scenario 'removes link when asks question', js: true do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+  
+      click_on 'Add link'
+      
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+      click_on 'Remove link'
+  
+      click_on 'Ask'
+  
+      expect(page).to_not have_link 'My gist', href: gist_url
+    end
   end
-
 end
 
-#rspec spec/features/question/add_link_spec.rb
+#rspec spec/features/question/add_links_spec.rb

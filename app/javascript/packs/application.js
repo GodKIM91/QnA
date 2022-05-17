@@ -10,6 +10,7 @@ import "channels"
 
 // add jquery
 require('jquery')
+require("@nathanvda/cocoon")
 require("packs/answers")
 require("packs/questions")
 import $ from 'jquery'
