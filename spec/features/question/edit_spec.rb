@@ -9,6 +9,7 @@ feature 'User can edit his question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given(:other_user) { create(:user) }
+  given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -57,6 +58,18 @@ feature 'User can edit his question', %q{
       expect(page).to have_content "Title can't be blank"
     end
 
+    scenario 'added one more link to his question' do
+      expect(page).to_not have_link 'My gist', href: gist_url
+      within '.question' do
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+      end
+      click_on 'Save'
+      expect(page).to have_link 'My gist', href: gist_url
+    end
+
     scenario 'edits his question attachment' do
       expect(page).to have_link 'rails_helper.rb'
       click_on 'Edit'
@@ -76,7 +89,6 @@ feature 'User can edit his question', %q{
         expect(page).to_not have_link 'rails_helper.rb'
       end
     end
-
   end
 end
 

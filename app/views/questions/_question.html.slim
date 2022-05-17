@@ -18,13 +18,16 @@ h5= "Question body: #{question.body}"
     p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
     p= link_to 'Delete question', question_path(question), method: :delete
     = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" }, local: false do |f|
-      = f.label :title, 'Your question title'
-      = f.text_field :title
-      br
-      = f.label :body, 'Your question body'
-      = f.text_area :body
-      br
-      = f.label :files
-      = f.file_field :files, multiple: true
-      br
+      p
+        = f.label :title, 'Your question title'
+        = f.text_field :title
+      p
+        = f.label :body, 'Your question body'
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true
+      p
+        = f.fields_for :links do |link|
+        = link_to_add_association 'Add link', f, :links
       = f.submit 'Save'

@@ -10,6 +10,7 @@ feature 'User can edit his answer', %q{
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
   given(:other_user) { create(:user) }
+  given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
 
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question)
@@ -53,6 +54,18 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'added one more link to his answer' do
+      expect(page).to_not have_link 'My gist', href: gist_url
+      click_on 'Edit'
+      within '.answers' do
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+      end
+      click_on 'Save'
+      expect(page).to have_link 'My gist', href: gist_url
+    end
+
     scenario 'delete his answer attachments' do
       expect(page).to have_link 'rails_helper.rb'
       click_on 'Edit'
@@ -71,8 +84,6 @@ feature 'User can edit his answer', %q{
       end
       expect(page).to have_content "Body can't be blank"
     end
-    
-    
   end
 end
 
