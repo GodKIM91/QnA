@@ -9,7 +9,7 @@ feature 'User can edit his question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given(:other_user) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
+  given(:google_url) { 'https://google.com' }
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -60,13 +60,13 @@ feature 'User can edit his question', %q{
 
     scenario 'added one more link to his question' do
       within '.question' do
-        expect(page).to_not have_link 'My gist', href: gist_url
+        expect(page).to_not have_link 'My gist', href: google_url
         click_on 'Edit'
         click_on 'Add link'
         fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: gist_url
+        fill_in 'Url', with: google_url
         click_on 'Save'
-        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'My gist', href: google_url
       end
     end
 
@@ -95,11 +95,11 @@ feature 'User can edit his question', %q{
         click_on 'Edit'
         click_on 'Add link'
         fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: gist_url
+        fill_in 'Url', with: google_url
         click_on 'Save'
-        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'My gist', href: google_url
         click_on 'Delete link'
-        expect(page).to_not have_link 'My gist', href: gist_url
+        expect(page).to_not have_link 'My gist', href: google_url
       end
     end
   end
