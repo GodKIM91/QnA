@@ -16,6 +16,7 @@ class Answer < ApplicationRecord
     transaction do
       old_best_answer&.update!(best: false)
       update!(best: true)
+      question.reward&.update!(user: user)
     end
   end
 end

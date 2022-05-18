@@ -1,4 +1,8 @@
 - if current_user.present?
   = button_to 'Log out', destroy_user_session_path, method: :delete
+  = link_to 'Your rewards', rewards_path
+  br
+  = link_to 'Back to main', questions_path
+  
 - else
   = link_to 'Sign in', new_user_session_path

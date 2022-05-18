@@ -15,6 +15,7 @@ end
 describe 'Check set_as_best model method' do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let!(:reward) { create(:reward, question: question) }
   let(:default_answer) { create(:answer, question: question, user: user) }
 
   it 'retunrn false if answer is not the best' do
@@ -25,6 +26,13 @@ describe 'Check set_as_best model method' do
     default_answer.set_as_best
     default_answer.reload
     expect(default_answer).to be_best
+  end
+  
+  it 'best answer author is reward owner' do
+    default_answer.set_as_best
+    default_answer.reload
+    expect(default_answer).to be_best
+    expect(default_answer.user).to eq question.reward.user
   end
 end
 
