@@ -9,6 +9,7 @@ feature 'User can edit his question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given(:other_user) { create(:user) }
+  given(:google_url) { 'https://google.com' }
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -57,6 +58,18 @@ feature 'User can edit his question', %q{
       expect(page).to have_content "Title can't be blank"
     end
 
+    scenario 'added one more link to his question' do
+      within '.question' do
+        expect(page).to_not have_link 'My gist', href: google_url
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: google_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: google_url
+      end
+    end
+
     scenario 'edits his question attachment' do
       expect(page).to have_link 'rails_helper.rb'
       click_on 'Edit'
@@ -77,7 +90,19 @@ feature 'User can edit his question', %q{
       end
     end
 
+    scenario 'delete his question link' do
+      within '.question' do
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: google_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: google_url
+        click_on 'Delete link'
+        expect(page).to_not have_link 'My gist', href: google_url
+      end
+    end
   end
 end
 
-#rspec spec/features/question/edit_spec.rb
+# rspec spec/features/question/edit_spec.rb

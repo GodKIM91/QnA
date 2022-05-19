@@ -7,14 +7,24 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import gistLoader from "easy-gist-async"
 
 // add jquery
 require('jquery')
+require("@nathanvda/cocoon")
 require("packs/answers")
 require("packs/questions")
 import $ from 'jquery'
 window.jQuery = $
 window.$ = $
+
+// load gist content instead of link
+document.addEventListener('turbolinks:load', function () {
+    gistLoader()
+})
+document.addEventListener('ajax:success', function () {
+    gistLoader()
+})
 
 Rails.start()
 Turbolinks.start()

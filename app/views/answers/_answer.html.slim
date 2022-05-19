@@ -21,13 +21,26 @@ div id="answer_#{answer.id}"
       -if current_user&.author_of?(answer)
         p = link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 
+  - if answer.links.present?
+  - answer.links.each do |link|
+    div id = "link_id_#{link.id}"
+      - if link&.gist?
+        div data-gist = "#{link.url}"
+      - else
+        li= link_to link.name, link.url
+      -if current_user&.author_of?(answer)
+        p = link_to 'Delete link', link_path(link), method: :delete, remote: true
+
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
-    = f.label :body, 'Your answer'
-    = f.text_area :body
-    br
-    = f.label :files
-    = f.file_field :files, multiple: true
-    br
+    p
+      = f.label :body, 'Your answer'
+      = f.text_area :body
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true
+    p
+      = f.fields_for :links do |link|
+      = link_to_add_association 'Add link', f, :links, partial: 'questions/link_fields'
     = f.submit 'Save'
 hr style="height:2px; background-color:blue; width:20%; margin-left:0"
 

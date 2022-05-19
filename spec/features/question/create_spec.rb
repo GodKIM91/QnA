@@ -32,12 +32,19 @@ feature 'User can create question', %q{
     scenario 'asks a question with attached file' do
       fill_in 'Title', with: 'Test question title'
       fill_in 'Body', with: 'Test question body'
-
       attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Ask'
-
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
+    end
+
+    scenario 'asks a question with reward' do
+      fill_in 'Title', with: 'Test question title'
+      fill_in 'Body', with: 'Test question body'
+      fill_in 'Reward title', with: 'Reward title'
+      attach_file 'Reward file', "#{Rails.root}/app/assets/images/best_answer.png"
+      click_on 'Ask'
+      expect(page).to have_content "You can get a reward 'Reward title' for the best answer"
     end
   end
 
@@ -48,4 +55,4 @@ feature 'User can create question', %q{
   end
 end
 
-#rspec spec/features/question/create_spec.rb
+# rspec spec/features/question/create_spec.rb

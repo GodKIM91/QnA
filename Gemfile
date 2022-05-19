@@ -32,6 +32,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 # For active storage and Yandex Object Storage support
 gem 'aws-sdk-s3', require: false
+# Forms links
+gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

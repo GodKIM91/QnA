@@ -10,6 +10,7 @@ feature 'User can edit his answer', %q{
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
   given(:other_user) { create(:user) }
+  given(:google_url) { 'https://google.com' }
 
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question)
@@ -53,12 +54,38 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'added one more link to his answer' do
+      within '.answers' do
+        expect(page).to_not have_link 'My gist', href: google_url
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: google_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: google_url
+      end
+      
+    end
+
     scenario 'delete his answer attachments' do
       expect(page).to have_link 'rails_helper.rb'
       click_on 'Edit'
       within '.answers' do
         click_on 'Delete file'
         expect(page).to_not have_link 'rails_helper.rb'
+      end
+    end
+
+    scenario 'delete his answer link' do
+      within '.answers' do
+        click_on 'Edit'
+        click_on 'Add link'
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: google_url
+        click_on 'Save'
+        expect(page).to have_link 'My gist', href: google_url
+        click_on 'Delete link'
+        expect(page).to_not have_link 'My gist', href: google_url
       end
     end
 
@@ -71,9 +98,7 @@ feature 'User can edit his answer', %q{
       end
       expect(page).to have_content "Body can't be blank"
     end
-    
-    
   end
 end
 
-#rspec spec/features/answer/edit_spec.rb
+# rspec spec/features/answer/edit_spec.rb

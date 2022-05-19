@@ -1,0 +1,5 @@
+h4= "Your rewards list:"
+- @rewards.each do |reward|
+  p= "Question title: #{reward.question.title}"
+  p= "Reward title: #{reward.title}"
+  p= image_tag(reward.file, size: '150x150')
