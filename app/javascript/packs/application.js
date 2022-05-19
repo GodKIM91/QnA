@@ -19,7 +19,10 @@ window.jQuery = $
 window.$ = $
 
 // load gist content instead of link
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbolinks:load', function () {
+    gistLoader()
+})
+document.addEventListener('ajax:success', function () {
     gistLoader()
 })
 
