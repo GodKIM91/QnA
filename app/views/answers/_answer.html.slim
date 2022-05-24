@@ -3,6 +3,7 @@ div id="answer_#{answer.id}"
     p= 'Best answer!'
     = image_tag "best_answer.png", size: 50
   p= answer.body
+  =render 'shared/rank', resource: answer
 
   - if current_user&.author_of?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

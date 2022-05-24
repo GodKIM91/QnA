@@ -14,6 +14,7 @@ require('jquery')
 require("@nathanvda/cocoon")
 require("packs/answers")
 require("packs/questions")
+require("packs/rank")
 import $ from 'jquery'
 window.jQuery = $
 window.$ = $
