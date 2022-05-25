@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :load_question, only: %i[create]
   before_action :find_answer, only: %i[update destroy set_best]
 
+  include Voted
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user

@@ -1,0 +1,8 @@
+.rank
+  span= "#{resource.class} rank: "
+  span#rank= resource.rank
+  -if current_user&.present? && !current_user&.author_of?(resource)
+    p= link_to 'Like', polymorphic_path(resource, action: :like), method: :patch, remote: true, data: { type: :json }
+    p= link_to 'Dislike', polymorphic_path(resource, action: :dislike), method: :patch, remote: true, data: { type: :json }
+
+

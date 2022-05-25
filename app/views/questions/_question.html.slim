@@ -1,6 +1,7 @@
 h4= "Question title: #{question.title}"
 h5= "Question body: #{question.body}"
 p= "You can get a reward '#{question.reward.title}' for the best answer" if question.reward.present?
+=render 'shared/rank', resource: question
 
 - if question.links.present?
   - question.links.each do |link|

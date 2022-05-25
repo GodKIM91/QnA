@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  it_behaves_like 'votable'
+
   it { should belong_to :question }
   it { should belong_to :user }
   it { should validate_presence_of :body }
   it { should have_many(:links).dependent(:destroy) }
+  it { should have_many(:votes).dependent(:destroy) }
   it { should accept_nested_attributes_for :links }
 
   it 'have many attached files' do
@@ -36,4 +39,4 @@ describe 'Check set_as_best model method' do
   end
 end
 
-#rspec spec/models/answer_spec.rb
+# rspec spec/models/answer_spec.rb
