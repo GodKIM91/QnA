@@ -37,3 +37,8 @@ p= "You can get a reward '#{question.reward.title}' for the best answer" if ques
         = f.fields_for :links do |link|
         = link_to_add_association 'Add link', f, :links
       = f.submit 'Save'
+.question_comments
+  = render 'comments/comments', resource: question
+.new_question_comment
+  - if current_user&.present?
+    = render 'comments/form', resource: question

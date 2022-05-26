@@ -41,8 +41,8 @@ feature 'User can edit his question', %q{
         expect(page).to_not have_content question.body
         expect(page).to have_content 'edited title'
         expect(page).to have_content 'edited body'
-        expect(page).to_not have_selector 'text_field'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector(:xpath, './/input[@id="question_title"]')
+        expect(page).to_not have_selector(:xpath, './/textarea[@id="question_body"]')
       end
     end
 

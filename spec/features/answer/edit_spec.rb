@@ -34,12 +34,13 @@ feature 'User can edit his answer', %q{
     scenario 'edits his answer' do
       click_on 'Edit'
       within '.answers' do
+        expect(page).to have_selector(:xpath, './/textarea[@id="answer_body"]')
         fill_in 'Your answer', with: 'edited answer'
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector(:xpath, './/textarea[@id="answer_body"]')
       end
     end
 
