@@ -1,6 +1,7 @@
 .question-errors
 .question
-  = render @question
+  div id="question_#{@question.id}"
+    = render @question
   
 hr style="height:2px; background-color:red"
 

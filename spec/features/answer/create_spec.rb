@@ -45,6 +45,33 @@ feature 'User can create answer for question', %q{
     visit question_path(question)
     expect(page).to_not have_content 'Create'
   end
+
+  describe 'miltiple sessions' do
+    scenario "new answer appears on another user's question page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your answer', with: 'Already creared answer body'
+        click_on 'Create'
+        expect(page).to have_content question.title
+        expect(page).to have_content question.body
+        within '.answers' do
+          expect(page).to have_content 'Already creared answer body'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Already creared answer body'
+      end
+    end
+  end
 end
 
-#rspec spec/features/answer/create_spec.rb
+# rspec spec/features/answer/create_spec.rb
