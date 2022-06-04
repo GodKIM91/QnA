@@ -31,7 +31,7 @@ div id="answer_#{answer.id}"
         li= link_to link.name, link.url
       -if current_user&.author_of?(answer)
         p = link_to 'Delete link', link_path(link), method: :delete, remote: true
-
+        
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
     p
       = f.label :body, 'Your answer'
@@ -43,5 +43,11 @@ div id="answer_#{answer.id}"
       = f.fields_for :links do |link|
       = link_to_add_association 'Add link', f, :links, partial: 'questions/link_fields'
     = f.submit 'Save'
+
+  .answer_comments
+    = render 'comments/comments', resource: answer
+  .new_answer_comment
+    - if current_user&.present?
+      = render 'comments/form', resource: answer
 hr style="height:2px; background-color:blue; width:20%; margin-left:0"
 

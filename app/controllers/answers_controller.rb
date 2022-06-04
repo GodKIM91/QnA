@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
   before_action :find_answer, only: %i[update destroy set_best]
+  after_action :publish_answer, only: %i[create]
 
   include Voted
 
@@ -38,5 +39,14 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body,
                                    files: [],
                                    links_attributes: [:name, :url, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    ActionCable.server.broadcast(
+        "answers_of_question_#{@answer.question.id}",
+        @answer
+    )
   end
 end

@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  after_action :publish_question, only: :create
 
   include Voted
 
@@ -52,5 +53,17 @@ class QuestionsController < ApplicationController
                                      files: [],
                                      links_attributes: [:name, :url,:_destroy],
                                      reward_attributes: [:title, :file])
+  end
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(
+        'questions',
+        ApplicationController.render(
+            partial: 'questions/action_cable_partial',
+            locals: { question: @question }
+        )
+    )
   end
 end
