@@ -22,4 +22,10 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
   resources :links, only: :destroy
   resources :rewards, only: :index
+
+  resources :authorizations, only: [:create] do
+    member do
+      get :confirm_email
+    end
+  end
 end
