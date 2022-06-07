@@ -3,12 +3,7 @@ require 'rails_helper'
 RSpec.describe AuthorizationsController, type: :controller do
 
   describe 'POST #create' do
-    before do
-      allow(AuthorizationsMailer).to receive(:email_confirmation).and_return(Struct.new(:deliver_now).new)
-    end
-
     context 'new user' do
-
       it 'creates new user in db with email from authorization_params' do
         expect { post :create, params: { authorization: { email: 'sample@vk.com', provider: 'vkontakte', uid: '123' } }
                }.to change(User, :count).by(1)
@@ -83,7 +78,6 @@ RSpec.describe AuthorizationsController, type: :controller do
       expect(response).to redirect_to root_path
     end
   end
-
 end
 
 # rspec spec/controllers/authorizations_controller_spec.rb
