@@ -9,9 +9,8 @@ class AuthorizationsController < ApplicationController
       user = User.create!(email: email, password: password, password_confirmation: password)
     end
 
-    authorization = user.authorizations.create(provider: authorization_params[:provider],
-                                               uid: authorization_params[:uid],
-                                               confirmed: false)
+    authorization = find_authorization
+    authorization ||= create_user_authorization(user)
     AuthorizationsMailer.email_confirmation(authorization).deliver_now
   end
 
@@ -29,4 +28,13 @@ class AuthorizationsController < ApplicationController
     params.require(:authorization).permit(:email, :provider, :uid)
   end
 
+  def find_authorization
+    Authorization.find_by(provider: authorization_params[:provider], uid: authorization_params[:uid])
+  end
+
+  def create_user_authorization(user)
+    user.authorizations.create(provider: authorization_params[:provider],
+                               uid: authorization_params[:uid],
+                               confirmed: false)
+  end
 end
