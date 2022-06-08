@@ -1,0 +1,11 @@
+h4 = 'Please clarify you email to complete registration'
+p
+  = form_with model: @authorization, local: false do |f|
+    = f.label :email
+    = f.email_field :email
+
+    .hidden
+      = f.text_field :provider
+      = f.text_field :uid
+
+    = f.submit 'Submit'

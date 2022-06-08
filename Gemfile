@@ -27,6 +27,12 @@ gem 'jbuilder', '~> 2.7'
 gem 'devise'
 gem 'jquery-rails'
 gem 'gon'
+# social networks authorization
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-vkontakte'
+gem 'omniauth-rails_csrf_protection'
+gem 'capybara-email'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -43,6 +49,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'slim-rails'
   gem 'dotenv-rails'
+  gem 'letter_opener'
 end
 
 group :development do
