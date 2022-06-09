@@ -15,16 +15,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params) if can?(:update, @answer)
   end
 
   def set_best
     @question = @answer.question
-    @answer.set_as_best if current_user.author_of?(@question)
+    @answer.set_as_best if can?(:set_best, @answer)
   end
 
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    @answer.destroy if can?(:destroy, @answer)
   end
 
   private

@@ -35,11 +35,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author_of?(@question)
+    @question.update(question_params) if can?(:update, @question)
   end
 
   def destroy
-    @question.destroy if current_user.author_of?(@question)
+    @question.destroy if can?(:destroy, @question)
     redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
