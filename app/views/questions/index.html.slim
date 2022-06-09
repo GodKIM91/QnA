@@ -3,4 +3,5 @@
   - @questions.each do |question|
     h2= link_to "#{question.title}: #{question.body}", question
 
-p= link_to 'Ask question', new_question_path
+- if can?(:create, Question)
+  p= link_to 'Ask question', new_question_path

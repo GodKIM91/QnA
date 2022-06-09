@@ -8,5 +8,5 @@ hr style="height:2px; background-color:red"
 .answers
   = render @question.answers.sort_by_best
 
-- if current_user&.present?
+- if can?(:create, Answer)
   = render 'answers/form'

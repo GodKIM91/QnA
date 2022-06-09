@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy set_best]
   after_action :publish_answer, only: %i[create]
 
+  authorize_resource
+
   include Voted
 
   def create
