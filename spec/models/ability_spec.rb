@@ -56,6 +56,10 @@ RSpec.describe Ability, type: :model do
     # Links
     it { should be_able_to :destroy, create(:link, linkable: create(:question, user: user)), user: user }
     it { should_not be_able_to :destroy, create(:link, linkable: create(:question, user: author)), user: user }
+
+    # Votes
+    it { should be_able_to :like, create(:question, user: author), user: user }
+    it { should_not be_able_to :like, create(:question, user: user), user: user }
   end
 
   describe 'for guest' do
