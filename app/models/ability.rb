@@ -7,7 +7,12 @@ class Ability
 
   def initialize(user)
     @user = user
-    user ? user_abilities : guest_abilities
+    return guest_abilities unless user
+    user.admin? ? admin_abilities : user_abilities
+  end
+
+  def admin_abilities
+    can :manage, :all
   end
 
   def user_abilities
