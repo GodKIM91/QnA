@@ -1,5 +1,7 @@
 class AuthorizationsController < ApplicationController
 
+  skip_authorization_check
+
   def create
     email = authorization_params[:email]
     user = User.find_by(email: email)
