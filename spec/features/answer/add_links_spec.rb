@@ -66,4 +66,4 @@ feature 'User can add links to answer', %q{
   end
 end
 
-#rspec spec/features/answer/add_links_spec.rb
+# rspec spec/features/answer/add_links_spec.rb
