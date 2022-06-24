@@ -183,22 +183,8 @@ describe 'Answers API', type: :request do
       let(:method) { :delete }
     end
 
-    context 'authorized' do
-      before do
-        delete api_path, params: { access_token: access_token.token }
-      end
-
-      it 'returns status 200' do
-        expect(response.status).to eq 200
-      end
-
-      it 'detroy answer from db' do
-        expect(Answer.count).to eq 0
-      end
-
-      it 'returns successfully message' do
-        expect(json['message']).to include 'Answer successfuly deleted'
-      end
+    it_behaves_like 'API Deletable' do
+      let(:klass) { 'Answer' }
     end
   end
 end
