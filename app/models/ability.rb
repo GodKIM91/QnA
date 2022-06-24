@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Ability
   include CanCan::Ability
 
@@ -22,6 +20,9 @@ class Ability
     can :destroy, [Question, Answer], user_id: user.id
     can :set_best, Answer, question: { user_id: user.id }
 
+    can :me, User
+    can :index, User
+    
     can :destroy, Link do |link|
       user.author_of?(link.linkable)
     end
@@ -38,5 +39,4 @@ class Ability
   def guest_abilities
     can :read, :all
   end
-
 end
