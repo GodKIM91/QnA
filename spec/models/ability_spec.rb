@@ -67,6 +67,11 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
   end
+
+  describe 'for admin' do
+    let(:user) { create :user, admin: true }
+    it { should be_able_to :manage, :all }
+  end
 end
 
 # rspec spec/models/ability_spec.rb

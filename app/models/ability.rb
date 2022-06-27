@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Ability
   include CanCan::Ability
 
@@ -7,7 +5,12 @@ class Ability
 
   def initialize(user)
     @user = user
-    user ? user_abilities : guest_abilities
+    return guest_abilities unless user
+    user.admin? ? admin_abilities : user_abilities
+  end
+
+  def admin_abilities
+    can :manage, :all
   end
 
   def user_abilities
@@ -17,6 +20,9 @@ class Ability
     can :destroy, [Question, Answer], user_id: user.id
     can :set_best, Answer, question: { user_id: user.id }
 
+    can :me, User
+    can :index, User
+    
     can :destroy, Link do |link|
       user.author_of?(link.linkable)
     end
@@ -33,5 +39,4 @@ class Ability
   def guest_abilities
     can :read, :all
   end
-
 end
