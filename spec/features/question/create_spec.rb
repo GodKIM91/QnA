@@ -24,7 +24,14 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Test question body'
     end
   
-    scenario 'asks a question with errors' do
+    scenario 'asks a question with empty body' do
+      fill_in 'Title', with: 'Test question title'
+      click_on 'Ask'
+      expect(page).to have_content "Body can't be blank"
+    end
+
+    scenario 'asks a question with empty title' do
+      fill_in 'Body', with: 'Test question body'
       click_on 'Ask'
       expect(page).to have_content "Title can't be blank"
     end
