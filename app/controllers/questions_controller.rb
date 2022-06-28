@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  before_action :load_subscription, only: :show
   after_action :publish_question, only: :create
 
   authorize_resource
@@ -28,6 +29,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
     if @question.save
+      @question.subscriptions.create(user: current_user)
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
@@ -47,6 +49,10 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.with_attached_files.find(params[:id])
+  end
+
+  def load_subscription
+    @subscription = @question.subscriptions.where(user: current_user).first
   end
 
   def question_params
