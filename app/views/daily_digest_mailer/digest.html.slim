@@ -1,0 +1,4 @@
+p = "Hi #{@greeting}! Please see below for a list of new questions from today:"
+ul
+  - @questions.each do |question|
+    li= link_to question.title, url_for(question)
