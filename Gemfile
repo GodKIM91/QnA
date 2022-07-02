@@ -37,6 +37,9 @@ gem 'capybara-email'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+# Elastic search
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -78,6 +81,7 @@ group :test do
   gem 'shoulda-matchers', '~> 5.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
   gem 'launchy'
+  gem 'elasticsearch-extensions'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

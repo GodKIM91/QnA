@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   concern :commentable do
-    resources :comments, only: :create, shallow: true
+    resources :comments, only: [:create, :show], shallow: true
   end
   
   resources :questions, concerns: [:votable, :commentable] do
@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
   resources :links, only: :destroy
   resources :rewards, only: :index
+  resources :searches, only: :index
+  resources :users, only: :show
 
   resources :authorizations, only: [:create] do
     member do

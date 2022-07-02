@@ -1,0 +1,10 @@
+.results
+  h2= "Search results:"
+  - unless @results.empty?
+    ul
+      - @results.each do |result|
+        li
+          = link_to result[:title].truncate(20), controller: result[:controller], action: 'show', id: result[:id]
+          p= result[:details].truncate(100)
+  - else
+    = 'No matches found'

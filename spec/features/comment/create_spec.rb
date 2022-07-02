@@ -53,8 +53,10 @@ feature 'User can leave comments' do
   describe 'non-authenticated user', js: true do
     scenario 'cant write any comment' do
       visit question_path(question)
-      expect(page).to_not have_content 'Your comment:'
-      expect(page).to_not have_content 'Comment'
+      within '.question' do
+        expect(page).to_not have_content 'Your comment:'
+        expect(page).to_not have_content 'Comment'
+      end
     end
   end
 
