@@ -5,6 +5,10 @@ class CommentsController < ApplicationController
 
   authorize_resource
 
+  def show
+    redirect_to Comment.find(params[:id]).commentable
+  end
+
   def create
     @comment = @resource.comments.new(comment_params)
     @comment.user = current_user
@@ -35,5 +39,4 @@ class CommentsController < ApplicationController
         @comment
     )
   end
-
 end

@@ -43,7 +43,7 @@ feature 'User can add links to answer', %q{
 
       visit question_path(question)
 
-      within '.answers' do 
+      within '.answers' do
         expect(page).to have_content "Hello, world!"
       end
     end

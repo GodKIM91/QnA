@@ -1,12 +1,16 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
-  before_action :find_answer, only: %i[update destroy set_best]
+  before_action :find_answer, only: %i[show update destroy set_best]
   after_action :publish_answer, only: %i[create]
 
   authorize_resource
 
   include Voted
+
+  def show
+    redirect_to @answer.question
+  end
 
   def create
     @answer = @question.answers.new(answer_params)

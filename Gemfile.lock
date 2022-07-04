@@ -67,6 +67,7 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ansi (1.5.0)
     aws-eventstream (1.2.0)
     aws-partitions (1.586.0)
     aws-sdk-core (3.130.2)
@@ -123,6 +124,22 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    elasticsearch (7.4.0)
+      elasticsearch-api (= 7.4.0)
+      elasticsearch-transport (= 7.4.0)
+    elasticsearch-api (7.4.0)
+      multi_json
+    elasticsearch-extensions (0.0.33)
+      ansi
+      elasticsearch
+    elasticsearch-model (7.2.1)
+      activesupport (> 3)
+      elasticsearch (~> 7)
+      hashie
+    elasticsearch-rails (7.2.1)
+    elasticsearch-transport (7.4.0)
+      faraday
+      multi_json
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -368,6 +385,9 @@ DEPENDENCIES
   devise
   doorkeeper (= 5.1.0)
   dotenv-rails
+  elasticsearch-extensions
+  elasticsearch-model
+  elasticsearch-rails
   factory_bot_rails
   gon
   jbuilder (~> 2.7)
