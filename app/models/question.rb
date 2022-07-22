@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  # include Elasticsearch::Model
+  # include Elasticsearch::Model::Callbacks
 
   include Votable
   include Commentable
@@ -18,10 +18,10 @@ class Question < ApplicationRecord
   belongs_to :user
   validates :title, :body, presence: true
 
-  settings do
-    mappings dynamic: false do
-      indexes :title, type: :text
-      indexes :body, type: :text
-    end
-  end
+  # settings do
+  #   mappings dynamic: false do
+  #     indexes :title, type: :text
+  #     indexes :body, type: :text
+  #   end
+  # end
 end

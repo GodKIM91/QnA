@@ -1,6 +1,6 @@
 class Answer < ApplicationRecord
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  # include Elasticsearch::Model
+  # include Elasticsearch::Model::Callbacks
 
   include Votable
   include Commentable
@@ -19,11 +19,11 @@ class Answer < ApplicationRecord
 
   after_create :new_answer_notice
 
-  settings do
-    mappings dynamic: false do
-      indexes :body, type: :text
-    end
-  end
+  # settings do
+  #   mappings dynamic: false do
+  #     indexes :body, type: :text
+  #   end
+  # end
 
   def set_as_best
     old_best_answer = question.answers.find_by(best: true)

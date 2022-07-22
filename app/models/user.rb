@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  # include Elasticsearch::Model
+  # include Elasticsearch::Model::Callbacks
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
@@ -16,11 +16,11 @@ class User < ApplicationRecord
   has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
-  settings do
-    mappings dynamic: false do
-      indexes :email, type: :text
-    end
-  end
+  # settings do
+  #   mappings dynamic: false do
+  #     indexes :email, type: :text
+  #   end
+  # end
 
   def author_of?(item)
     self.id == item.user_id
