@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'ed25519', '>= 1.2', '< 2.0'
 gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
+gem 'slim-rails'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -62,7 +63,6 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 5.0.0'
   gem 'factory_bot_rails'
-  gem 'slim-rails'
   gem 'dotenv-rails'
   gem 'letter_opener'
 end
