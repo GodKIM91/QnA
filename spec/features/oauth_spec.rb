@@ -40,7 +40,7 @@ feature 'Oauth authentication', %q{
     })
 
     click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'Please clarify you email to complete registration'
+    expect(page).to have_content 'Please clarify your email to complete registration'
 
     fill_in 'Email', with: 'sample@vk.com'
     click_on 'Submit'

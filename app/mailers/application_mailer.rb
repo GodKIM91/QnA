@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'qna@devise.com'
+  default from: 'qna.godkim@gmail.com'
   layout 'mailer'
 end
