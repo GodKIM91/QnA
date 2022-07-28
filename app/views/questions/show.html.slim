@@ -1,28 +1,29 @@
-.question-errors
-.question
-  div id="question_#{@question.id}"
-    = render @question
+- cache @question do
+  .question-errors
+  .question
+    div id="question_#{@question.id}"
+      = render @question
 
-.subscriptions
-  - if @subscription
-    - if can? :destroy, @subscription
-      = link_to 'Unsubscribe',
-              subscription_path(@subscription),
-              method: :delete,
-              remote: true,
-              data: { type: :json }
-  - else
-    - if can?(:create, Subscription)
-      = link_to 'Subscribe',
-              question_subscriptions_path(@question),
-              method: :post,
-              remote: true,
-              data: { type: :json }
-  
-hr style="height:2px; background-color:red"
+  .subscriptions
+    - if @subscription
+      - if can? :destroy, @subscription
+        = link_to 'Unsubscribe',
+                subscription_path(@subscription),
+                method: :delete,
+                remote: true,
+                data: { type: :json }
+    - else
+      - if can?(:create, Subscription)
+        = link_to 'Subscribe',
+                question_subscriptions_path(@question),
+                method: :post,
+                remote: true,
+                data: { type: :json }
+    
+  hr style="height:2px; background-color:red"
 
-.answers
-  = render @question.answers.sort_by_best
+  .answers
+    = render @question.answers.sort_by_best
 
-- if can?(:create, Answer)
-  = render 'answers/form'
+  - if can?(:create, Answer)
+    = render 'answers/form'
