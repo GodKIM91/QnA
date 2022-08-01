@@ -1,53 +1,54 @@
-div id="answer_#{answer.id}"
-  - if answer.best?
-    p= 'Best answer!'
-    = image_tag "best_answer.png", size: 50
-  p= answer.body
-  =render 'shared/rank', resource: answer
+- cache answer do
+  div id="answer_#{answer.id}"
+    - if answer.best?
+      p= 'Best answer!'
+      = image_tag "best_answer.png", size: 50
+    p= answer.body
+    =render 'shared/rank', resource: answer
 
-  - if can?(:update, answer)
-    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= link_to link_to 'Delete answer', answer_path(answer), remote: true, method: :delete
+    - if can?(:update, answer)
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p= link_to link_to 'Delete answer', answer_path(answer), remote: true, method: :delete
 
-  - if can?(:set_best, answer) && !answer.best?
-    p= link_to 'Set as best',
-    set_best_answer_path(answer),
-    method: :patch,
-    remote: true
+    - if can?(:set_best, answer) && !answer.best?
+      p= link_to 'Set as best',
+      set_best_answer_path(answer),
+      method: :patch,
+      remote: true
 
-  - if answer.files.attached?
-  - answer.files.each do |file|
-    div id = "attached_file_id_#{file.id}"
-      p= link_to file.filename.to_s, url_for(file)
-      - if can?(:destroy, file)
-        p = link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+    - if answer.files.attached?
+    - answer.files.each do |file|
+      div id = "attached_file_id_#{file.id}"
+        p= link_to file.filename.to_s, url_for(file)
+        - if can?(:destroy, file)
+          p = link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 
-  - if answer.links.present?
-  - answer.links.each do |link|
-    div id = "link_id_#{link.id}"
-      - if link&.gist?
-        div data-gist = "#{link.url}"
-      - else
-        li= link_to link.name, link.url
-      - if can?(:destroy, answer)
-        p = link_to 'Delete link', link_path(link), method: :delete, remote: true
-        
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
-    p
-      = f.label :body, 'Your answer'
-      = f.text_area :body
-    p
-      = f.label :files
-      = f.file_field :files, multiple: true
-    p
-      = f.fields_for :links do |link|
-      = link_to_add_association 'Add link', f, :links, partial: 'questions/link_fields'
-    = f.submit 'Save'
+    - if answer.links.present?
+    - answer.links.each do |link|
+      div id = "link_id_#{link.id}"
+        - if link&.gist?
+          div data-gist = "#{link.url}"
+        - else
+          li= link_to link.name, link.url
+        - if can?(:destroy, answer)
+          p = link_to 'Delete link', link_path(link), method: :delete, remote: true
+          
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+      p
+        = f.label :body, 'Your answer'
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true
+      p
+        = f.fields_for :links do |link|
+        = link_to_add_association 'Add link', f, :links, partial: 'questions/link_fields'
+      = f.submit 'Save'
 
-  .answer_comments
-    = render 'comments/comments', resource: answer
-  .new_answer_comment
-    - if can?(:create, Comment)
-      = render 'comments/form', resource: answer
-hr style="height:2px; background-color:blue; width:20%; margin-left:0"
+    .answer_comments
+      = render 'comments/comments', resource: answer
+    .new_answer_comment
+      - if can?(:create, Comment)
+        = render 'comments/form', resource: answer
+  hr style="height:2px; background-color:blue; width:20%; margin-left:0"
 

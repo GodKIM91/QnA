@@ -1,2 +1,3 @@
-p= "Author: #{comment.user.email}"
-p= comment.body
+- cache comment do
+  p= "Author: #{comment.user.email}"
+  p= comment.body
